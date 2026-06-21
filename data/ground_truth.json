@@ -1,0 +1,152 @@
+{
+  "TXN-00071": {
+    "exception_type": "TIMING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank posted 3 day(s) after ledger \u2014 timing difference, not an error"
+  },
+  "TXN-00072": {
+    "exception_type": "TIMING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank posted 1 day(s) after ledger \u2014 timing difference, not an error"
+  },
+  "TXN-00073": {
+    "exception_type": "TIMING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank posted 3 day(s) after ledger \u2014 timing difference, not an error"
+  },
+  "TXN-00074": {
+    "exception_type": "TIMING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank posted 3 day(s) after ledger \u2014 timing difference, not an error"
+  },
+  "TXN-00075": {
+    "exception_type": "TIMING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank posted 3 day(s) after ledger \u2014 timing difference, not an error"
+  },
+  "TXN-00076": {
+    "exception_type": "ROUNDING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank amount differs by $1.02 \u2014 processing fee deduction, not an error"
+  },
+  "TXN-00077": {
+    "exception_type": "ROUNDING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank amount differs by $0.54 \u2014 processing fee deduction, not an error"
+  },
+  "TXN-00078": {
+    "exception_type": "ROUNDING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank amount differs by $2.65 \u2014 processing fee deduction, not an error"
+  },
+  "TXN-00079": {
+    "exception_type": "ROUNDING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank amount differs by $4.02 \u2014 processing fee deduction, not an error"
+  },
+  "TXN-00080": {
+    "exception_type": "ROUNDING",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Bank amount differs by $3.31 \u2014 processing fee deduction, not an error"
+  },
+  "TXN-00081": {
+    "exception_type": "DUPLICATE",
+    "expected_action": "ESCALATE",
+    "explanation": "Transaction recorded twice in internal ledger \u2014 duplicate entry error, needs correction"
+  },
+  "TXN-00082": {
+    "exception_type": "DUPLICATE",
+    "expected_action": "ESCALATE",
+    "explanation": "Transaction recorded twice in internal ledger \u2014 duplicate entry error, needs correction"
+  },
+  "TXN-00083": {
+    "exception_type": "DUPLICATE",
+    "expected_action": "ESCALATE",
+    "explanation": "Transaction recorded twice in internal ledger \u2014 duplicate entry error, needs correction"
+  },
+  "TXN-00084": {
+    "exception_type": "DUPLICATE",
+    "expected_action": "ESCALATE",
+    "explanation": "Transaction recorded twice in internal ledger \u2014 duplicate entry error, needs correction"
+  },
+  "TXN-00085": {
+    "exception_type": "DUPLICATE",
+    "expected_action": "ESCALATE",
+    "explanation": "Transaction recorded twice in internal ledger \u2014 duplicate entry error, needs correction"
+  },
+  "TXN-00086": {
+    "exception_type": "MISSING",
+    "expected_action": "ESCALATE",
+    "explanation": "No counterpart found on bank statement \u2014 possible unprocessed or failed transaction"
+  },
+  "TXN-00087": {
+    "exception_type": "MISSING",
+    "expected_action": "ESCALATE",
+    "explanation": "No counterpart found on bank statement \u2014 possible unprocessed or failed transaction"
+  },
+  "TXN-00088": {
+    "exception_type": "MISSING",
+    "expected_action": "ESCALATE",
+    "explanation": "No counterpart found on bank statement \u2014 possible unprocessed or failed transaction"
+  },
+  "TXN-00089": {
+    "exception_type": "MISSING",
+    "expected_action": "ESCALATE",
+    "explanation": "No counterpart found on bank statement \u2014 possible unprocessed or failed transaction"
+  },
+  "TXN-00090": {
+    "exception_type": "MISSING",
+    "expected_action": "ESCALATE",
+    "explanation": "No counterpart found on bank statement \u2014 possible unprocessed or failed transaction"
+  },
+  "TXN-00091": {
+    "exception_type": "REFID",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Reference ID mismatch due to transposition \u2014 same amount/date/counterparty confirms match"
+  },
+  "TXN-00092": {
+    "exception_type": "REFID",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Reference ID mismatch due to transposition \u2014 same amount/date/counterparty confirms match"
+  },
+  "TXN-00093": {
+    "exception_type": "REFID",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Reference ID mismatch due to transposition \u2014 same amount/date/counterparty confirms match"
+  },
+  "TXN-00094": {
+    "exception_type": "REFID",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Reference ID mismatch due to transposition \u2014 same amount/date/counterparty confirms match"
+  },
+  "TXN-00095": {
+    "exception_type": "REFID",
+    "expected_action": "AUTO_RESOLVE",
+    "explanation": "Reference ID mismatch due to transposition \u2014 same amount/date/counterparty confirms match"
+  },
+  "TXN-00096": {
+    "exception_type": "FX",
+    "expected_action": "ESCALATE",
+    "explanation": "Amount differs by $673.23 \u2014 exceeds simple rounding, likely FX rate timing, needs review"
+  },
+  "TXN-00097": {
+    "exception_type": "FX",
+    "expected_action": "ESCALATE",
+    "explanation": "Amount differs by $1233.46 \u2014 exceeds simple rounding, likely FX rate timing, needs review"
+  },
+  "TXN-00098": {
+    "exception_type": "FX",
+    "expected_action": "ESCALATE",
+    "explanation": "Amount differs by $227.43 \u2014 exceeds simple rounding, likely FX rate timing, needs review"
+  },
+  "TXN-00099": {
+    "exception_type": "FX",
+    "expected_action": "ESCALATE",
+    "explanation": "Amount differs by $465.69 \u2014 exceeds simple rounding, likely FX rate timing, needs review"
+  },
+  "TXN-00100": {
+    "exception_type": "FX",
+    "expected_action": "ESCALATE",
+    "explanation": "Amount differs by $76.9 \u2014 exceeds simple rounding, likely FX rate timing, needs review"
+  }
+}

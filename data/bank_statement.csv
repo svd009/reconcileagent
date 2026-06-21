@@ -1,0 +1,96 @@
+txn_id,date,amount,description,category
+TXN-00043,2026-04-11,12832.96,Beacon Hill Advisors,check_deposit
+TXN-00066,2026-04-28,33481.9,Atlas Freight Co,check_deposit
+TXN-00046,2026-05-28,24916.0,Northbridge Holdings,ach_payment
+TXN-00004,2026-04-06,10611.83,Atlas Freight Co,fee_adjustment
+TXN-00100,2026-05-15,5245.48,Meridian Capital Partners (FX),wire_transfer
+TXN-00026,2026-05-28,28072.05,Crestview Mfg,ach_payment
+TXN-00028,2026-05-26,5396.71,Apex Logistics LLC,check_deposit
+TXN-00008,2026-04-18,7589.69,Crestview Mfg,wire_transfer
+TXN-00038,2026-04-21,23529.78,Northbridge Holdings,card_settlement
+TXN-00053,2026-05-01,11777.42,Pinnacle Retail Group,check_deposit
+TXN-00082,2026-05-13,39248.43,Vantage Point Industries,wire_transfer
+TXN-00012,2026-05-06,14178.58,Beacon Hill Advisors,card_settlement
+TXN-00033,2026-04-28,7717.85,Meridian Capital Partners,card_settlement
+TXN-00040,2026-04-04,11675.71,Beacon Hill Advisors,wire_transfer
+TXN-00037,2026-05-20,44288.47,Meridian Capital Partners,fee_adjustment
+TXN-00091-B,2026-05-06,612.7,Northbridge Holdings,ach_payment
+TXN-00020,2026-04-15,32908.79,Meridian Capital Partners,ach_payment
+TXN-00027,2026-04-09,24530.83,Northbridge Holdings,wire_transfer
+TXN-00002,2026-04-15,6826.89,Northbridge Holdings,fee_adjustment
+TXN-00024,2026-04-10,12824.52,Sterling & Co,fee_adjustment
+TXN-00047,2026-04-15,3213.64,Meridian Capital Partners,fee_adjustment
+TXN-00039,2026-05-27,47297.63,Vantage Point Industries,ach_payment
+TXN-00062,2026-04-06,44476.66,Sterling & Co,ach_payment
+TXN-00093-B,2026-05-06,7236.29,Apex Logistics LLC,wire_transfer
+TXN-00095-B,2026-04-14,32786.89,Northbridge Holdings,card_settlement
+TXN-00003,2026-04-06,28405.07,Meridian Capital Partners,wire_transfer
+TXN-00075,2026-05-07,15288.3,Vantage Point Industries,ach_payment
+TXN-00030,2026-04-30,25468.12,Atlas Freight Co,wire_transfer
+TXN-00042,2026-05-20,6167.64,Pinnacle Retail Group,fee_adjustment
+TXN-00078,2026-05-10,47923.39,Northbridge Holdings,wire_transfer
+TXN-00013,2026-05-07,9351.01,Northbridge Holdings,wire_transfer
+TXN-00015,2026-05-25,11289.04,Northbridge Holdings,check_deposit
+TXN-00098,2026-04-02,8504.98,Crestview Mfg (FX),wire_transfer
+TXN-00009,2026-04-06,18329.52,Crestview Mfg,card_settlement
+TXN-00006,2026-04-15,21644.65,Vantage Point Industries,wire_transfer
+TXN-00035,2026-05-26,30070.61,Atlas Freight Co,fee_adjustment
+TXN-00021,2026-05-23,1686.0,Crestview Mfg,check_deposit
+TXN-00022,2026-04-18,3317.12,Beacon Hill Advisors,card_settlement
+TXN-00044,2026-04-14,44598.51,Sterling & Co,card_settlement
+TXN-00045,2026-04-26,47767.9,Crestview Mfg,check_deposit
+TXN-00083,2026-05-31,42168.38,Vantage Point Industries,wire_transfer
+TXN-00005,2026-04-02,27005.58,Atlas Freight Co,check_deposit
+TXN-00063,2026-04-27,23387.93,Sterling & Co,check_deposit
+TXN-00085,2026-04-18,13632.04,Sterling & Co,card_settlement
+TXN-00051,2026-05-03,11538.52,Pinnacle Retail Group,ach_payment
+TXN-00092-B,2026-05-05,1873.95,Crestview Mfg,fee_adjustment
+TXN-00073,2026-06-03,42750.25,Sterling & Co,fee_adjustment
+TXN-00034,2026-05-03,36609.89,Atlas Freight Co,wire_transfer
+TXN-00070,2026-05-29,40952.65,Apex Logistics LLC,wire_transfer
+TXN-00077,2026-05-12,14504.32,Crestview Mfg,wire_transfer
+TXN-00094-B,2026-04-20,17598.58,Meridian Capital Partners,card_settlement
+TXN-00049,2026-04-05,34020.19,Meridian Capital Partners,ach_payment
+TXN-00017,2026-04-24,17149.7,Vantage Point Industries,wire_transfer
+TXN-00069,2026-04-04,2549.31,Pinnacle Retail Group,fee_adjustment
+TXN-00031,2026-05-14,34636.54,Atlas Freight Co,card_settlement
+TXN-00056,2026-04-04,19415.43,Crestview Mfg,wire_transfer
+TXN-00048,2026-05-06,11160.99,Sterling & Co,wire_transfer
+TXN-00011,2026-05-05,6122.93,Harbor Trust Services,wire_transfer
+TXN-00058,2026-04-09,20337.04,Vantage Point Industries,check_deposit
+TXN-00099,2026-05-26,34856.81,Sterling & Co (FX),wire_transfer
+TXN-00036,2026-04-13,7463.36,Apex Logistics LLC,fee_adjustment
+TXN-00071,2026-05-06,3983.33,Apex Logistics LLC,wire_transfer
+TXN-00096,2026-05-20,26267.2,Harbor Trust Services (FX),wire_transfer
+TXN-00080,2026-04-24,13783.34,Pinnacle Retail Group,fee_adjustment
+TXN-00065,2026-04-25,12839.97,Pinnacle Retail Group,card_settlement
+TXN-00057,2026-04-16,9317.58,Atlas Freight Co,check_deposit
+TXN-00041,2026-04-06,35171.78,Northbridge Holdings,fee_adjustment
+TXN-00068,2026-05-08,35355.02,Meridian Capital Partners,card_settlement
+TXN-00076,2026-05-16,15182.68,Vantage Point Industries,check_deposit
+TXN-00018,2026-05-09,30533.71,Atlas Freight Co,ach_payment
+TXN-00097,2026-05-30,43411.35,Apex Logistics LLC (FX),wire_transfer
+TXN-00016,2026-04-18,21845.68,Crestview Mfg,ach_payment
+TXN-00084,2026-05-27,5271.67,Atlas Freight Co,ach_payment
+TXN-00072,2026-04-06,32458.92,Sterling & Co,check_deposit
+TXN-00007,2026-05-19,38708.45,Harbor Trust Services,card_settlement
+TXN-00060,2026-05-22,41365.55,Atlas Freight Co,wire_transfer
+TXN-00067,2026-04-10,9236.61,Sterling & Co,wire_transfer
+TXN-00023,2026-04-14,31512.74,Harbor Trust Services,check_deposit
+TXN-00029,2026-05-09,3189.8,Harbor Trust Services,fee_adjustment
+TXN-00055,2026-04-28,19821.24,Meridian Capital Partners,wire_transfer
+TXN-00014,2026-05-13,11054.93,Vantage Point Industries,wire_transfer
+TXN-00001,2026-05-11,5477.19,Vantage Point Industries,ach_payment
+TXN-00019,2026-04-11,22269.15,Vantage Point Industries,fee_adjustment
+TXN-00032,2026-05-20,30820.02,Northbridge Holdings,card_settlement
+TXN-00052,2026-05-05,6481.12,Beacon Hill Advisors,fee_adjustment
+TXN-00064,2026-05-28,2955.7,Harbor Trust Services,wire_transfer
+TXN-00050,2026-04-05,43474.35,Crestview Mfg,wire_transfer
+TXN-00025,2026-05-05,12722.19,Beacon Hill Advisors,check_deposit
+TXN-00074,2026-04-06,29787.41,Harbor Trust Services,fee_adjustment
+TXN-00081,2026-05-10,47227.38,Atlas Freight Co,wire_transfer
+TXN-00054,2026-04-13,4663.49,Harbor Trust Services,card_settlement
+TXN-00059,2026-04-16,41994.15,Northbridge Holdings,check_deposit
+TXN-00010,2026-05-09,12807.32,Meridian Capital Partners,check_deposit
+TXN-00079,2026-05-03,12835.82,Crestview Mfg,wire_transfer
+TXN-00061,2026-04-04,31355.13,Atlas Freight Co,wire_transfer
