@@ -204,20 +204,34 @@ class ReconciliationToolExecutor:
         clear the threshold. This is a hard gate at the tool level —
         the agent cannot resolve a high-value or low-confidence case
         just by asserting it's fine in the reasoning text.
+
+        Rejected attempts are ALSO logged to the audit trail (as
+        "RESOLVE_REJECTED") — a real compliance trail should show every
+        time the agent tried to take a risky action and was blocked by
+        policy, not just the actions that ultimately succeeded.
         """
         if confidence < AUTO_RESOLVE_CONFIDENCE:
-            return {
-                "status": "REJECTED",
-                "reason": f"Confidence {confidence} is below the auto-resolve threshold "
-                          f"({AUTO_RESOLVE_CONFIDENCE}). Use escalate_exception instead.",
-            }
+            rejection_reason = (f"Confidence {confidence} is below the auto-resolve threshold "
+                                 f"({AUTO_RESOLVE_CONFIDENCE}). Use escalate_exception instead.")
+            self.audit.log(
+                run_id=self.run_id, txn_id=txn_id, action="RESOLVE_REJECTED",
+                actor="policy_gate", exception_type=exception_type,
+                confidence=confidence, reasoning=f"Agent attempted: {reasoning} | Blocked: {rejection_reason}",
+                amount=amount,
+            )
+            return {"status": "REJECTED", "reason": rejection_reason}
+
         if amount > AUTO_RESOLVE_MAX_AMOUNT:
-            return {
-                "status": "REJECTED",
-                "reason": f"Amount ${amount} exceeds the auto-resolve limit "
-                          f"(${AUTO_RESOLVE_MAX_AMOUNT}). Use escalate_exception instead, "
-                          f"regardless of confidence.",
-            }
+            rejection_reason = (f"Amount ${amount} exceeds the auto-resolve limit "
+                                 f"(${AUTO_RESOLVE_MAX_AMOUNT}). Use escalate_exception instead, "
+                                 f"regardless of confidence.")
+            self.audit.log(
+                run_id=self.run_id, txn_id=txn_id, action="RESOLVE_REJECTED",
+                actor="policy_gate", exception_type=exception_type,
+                confidence=confidence, reasoning=f"Agent attempted: {reasoning} | Blocked: {rejection_reason}",
+                amount=amount,
+            )
+            return {"status": "REJECTED", "reason": rejection_reason}
 
         self.audit.log(
             run_id=self.run_id, txn_id=txn_id, action="AUTO_RESOLVED",

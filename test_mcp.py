@@ -129,30 +129,31 @@ def run_test():
     # ── Test 8: Audit trail durability — entries persist and are queryable ──
     print("\n[Test 8] Verifying audit trail durability...")
     run_history = audit.get_run_history("test-run-001")
-    # Only successful actions write to the audit trail — the two REJECTED
-    # resolve_exception calls (Tests 5 and 6) correctly do NOT write entries,
-    # since they were never actions, just rejected attempts. Only Test 4
-    # (RESOLVED) and Test 7 (ESCALATED) should appear.
-    assert len(run_history) == 2, f"Expected 2 logged actions (1 resolved + 1 escalated), got {len(run_history)}"
-    print(f"  ✓ {len(run_history)} entries logged for this run (rejected attempts correctly excluded)")
+    # Now that rejected resolve attempts are also logged (as RESOLVE_REJECTED),
+    # we expect: Test 4 (RESOLVED) + Test 5 (RESOLVE_REJECTED) + Test 6
+    # (RESOLVE_REJECTED) + Test 7 (ESCALATED) = 4 entries. This is intentional:
+    # a real compliance audit trail should show every attempted action,
+    # including ones blocked by policy, not just the ones that succeeded.
+    assert len(run_history) == 4, f"Expected 4 logged actions (1 resolved + 2 rejected + 1 escalated), got {len(run_history)}"
+    print(f"  ✓ {len(run_history)} entries logged for this run (including rejected attempts)")
 
     escalations = audit.get_escalations("test-run-001")
     assert len(escalations) == 1
     print(f"  ✓ {len(escalations)} escalation correctly queryable")
 
     txn_history = audit.get_transaction_history("TXN-00030")
-    assert len(txn_history) == 1, "TXN-00030 should have exactly 1 entry — the escalation (the rejected resolve attempt isn't logged)"
-    print(f"  ✓ Transaction-specific history retrievable: {len(txn_history)} entry for TXN-00030")
+    assert len(txn_history) == 2, "TXN-00030 should have 2 entries — the rejected resolve attempt AND the escalation"
+    print(f"  ✓ Transaction-specific history retrievable: {len(txn_history)} entries for TXN-00030")
 
     stats = audit.get_summary_stats()
     print(f"  ✓ Summary stats: {stats}")
-    assert stats["total_entries"] == 2
+    assert stats["total_entries"] == 4
 
     # ── Test 9: Audit trail persists across a NEW AuditTrail instance ──
     print("\n[Test 9] Verifying durability across process restarts...")
     audit2 = AuditTrail(test_db_path)  # simulate a fresh process opening the same DB
     history_after_reopen = audit2.get_run_history("test-run-001")
-    assert len(history_after_reopen) == 2, "Audit trail should persist after reopening the DB file"
+    assert len(history_after_reopen) == 4, "Audit trail should persist after reopening the DB file"
     print(f"  ✓ {len(history_after_reopen)} entries still present after reopening database")
     print(f"  ✓ This confirms the audit trail is durable, not in-memory only")
 

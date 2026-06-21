@@ -165,6 +165,10 @@ then call resolve_exception or escalate_exception to record your final decision.
                               f"({json.dumps(block.input)[:70]}...)")
                     result_json = self.executor.execute(block.name, block.input)
                     result = json.loads(result_json)
+
+                    if verbose and result.get("status") == "REJECTED":
+                        print(f"  [InvestigationAgent]   ⚠ REJECTED by policy: {result['reason']}")
+
                     tool_calls_log.append({
                         "tool": block.name, "input": block.input, "result": result
                     })
