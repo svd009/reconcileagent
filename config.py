@@ -30,6 +30,7 @@ AUTO_RESOLVE_MAX_AMOUNT  = 5000.00
 BASE_DIR     = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR     = os.path.join(BASE_DIR, "data")
 REPORTS_DIR  = os.path.join(BASE_DIR, "reports")
+AUDIT_DB     = os.path.join(REPORTS_DIR, "audit_trail.db")
 
 LEDGER_FILE  = os.path.join(DATA_DIR, "internal_ledger.csv")
 BANK_FILE    = os.path.join(DATA_DIR, "bank_statement.csv")

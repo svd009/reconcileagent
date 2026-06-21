@@ -27,3 +27,5 @@ reports/*.txt
 # OS
 .DS_Store
 Thumbs.db
+# Test artifacts
+data/test_audit_trail.db
