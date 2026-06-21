@@ -1,4 +1,4 @@
-# ReconcileAgent — Autonomous Transaction Reconciliation & Exception Resolution
+# ReconcileAgent: Autonomous Transaction Reconciliation & Exception Resolution
 
 > **Fintech / Banking Edition** | Built with Claude API — Deterministic Matching, MCP Tools with Policy-Enforced Auto-Resolve, Durable SQLite Audit Trail, Tiered Agentic Investigation (Haiku + Sonnet Extended Thinking)
 
@@ -38,42 +38,42 @@ A full reconciliation cycle across 105 internal ledger transactions and 95 bank 
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                   ReconcileAgent                          │
-│                                                            │
-│  [1] Synthetic Data Layer                                 │
-│       Two labeled transaction datasets, 6 exception types  │
-│                    ↓                                       │
-│  [2] Deterministic Matching Engine                         │
-│       Exact match → fuzzy match (amount/date tolerance)    │
-│       Resolves 87.6% of transactions, zero AI cost          │
-│                    ↓                                       │
-│  [3] MCP Server — Reconciliation Tools                     │
-│       search_counterpart · get_transaction_history          │
-│       resolve_exception · escalate_exception                │
-│       Policy enforced AT THE TOOL LEVEL, not just prompted   │
-│                    ↓                                       │
-│  [4] Autonomous Investigation Agent                         │
-│       Tiered routing: Haiku for matcher-hinted cases,        │
+┌  ──────────────────────────────────────────────────────────   ┐
+│                   ReconcileAgent                              │
+│                                                               │
+│  [1] Synthetic Data Layer                                     │
+│       Two labeled transaction datasets, 6 exception types     │
+│                    ↓                                          │
+│  [2] Deterministic Matching Engine                            │
+│       Exact match → fuzzy match (amount/date tolerance)       │
+│       Resolves 87.6% of transactions, zero AI cost            │
+│                    ↓                                          │
+│  [3] MCP Server — Reconciliation Tools                        │
+│       search_counterpart · get_transaction_history            │
+│       resolve_exception · escalate_exception                  │
+│       Policy enforced AT THE TOOL LEVEL, not just prompted    │
+│                    ↓                                          │
+│  [4] Autonomous Investigation Agent                           │
+│       Tiered routing: Haiku for matcher-hinted cases,         │
 │       Sonnet + extended thinking for fully ambiguous cases    │
 │       Act → verify → escalate-on-rejection loop               │
-│                    ↓                                       │
-│  [5] Durable SQLite Audit Trail                              │
+│                    ↓                                          │
+│  [5] Durable SQLite Audit Trail                               │
 │       Every action AND every rejected attempt logged          │
 │       Persists across runs — queryable history, not console   │
-│       output that vanishes when the terminal closes            │
-│                    ↓                                       │
-│  [6] Human Approval Gate                                     │
-│       Real interactive CLI — approve / reject / defer          │
-│       Every human decision also written to the audit trail     │
-│                    ↓                                       │
-│  [7] Evaluation Framework                                    │
+│       output that vanishes when the terminal closes           │
+│                    ↓                                          │
+│  [6] Human Approval Gate                                      │
+│       Real interactive CLI — approve / reject / defer         │
+│       Every human decision also written to the audit trail    │
+│                    ↓                                          │ 
+│  [7] Evaluation Framework                                     │
 │       Classification accuracy + policy-aware decision accuracy│
-│       Scored against seeded ground truth, zero extra API cost  │
-│                    ↓                                       │
+│       Scored against seeded ground truth, zero extra API cost │
+│                    ↓                                          │
 │  [8] Before/After Report + CLI                                │
-│       Structured JSON + Rich terminal output                   │
-└──────────────────────────────────────────────────────────┘
+│       Structured JSON + Rich terminal output                  │
+└  ──────────────────────────────────────────────────────────   ┘
 ```
 
 ---
@@ -149,8 +149,3 @@ python rescore_run.py <run_id>    # re-evaluate a past run from the audit trail
 - [Rich](https://github.com/Textualize/rich) — interactive terminal UI
 
 ---
-
-## Author
-
-**Suujay Dhhoka** — M.S. Electrical & Computer Engineering, Rutgers University (May 2026)
-Built as a follow-on project after FinGuard, applying Anthropic Academy's Claude API, Claude Code, and MCP coursework to a second real fintech operations problem: transaction reconciliation.
