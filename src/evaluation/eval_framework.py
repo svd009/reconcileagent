@@ -13,10 +13,28 @@ Two distinct, separately measured metrics:
      did the agent understand WHAT happened.
 
   2. DECISION ACCURACY
-     Did the agent choose the correct action (AUTO_RESOLVE vs ESCALATE)
-     per the policy we defined in Phase 1's ground truth? This measures
-     judgment quality — given what happened, did the agent make the
-     right call about whether it's safe to auto-resolve.
+     Did the agent choose the policy-correct action (AUTO_RESOLVE vs
+     ESCALATE)? This measures judgment quality — given what happened,
+     did the agent make the right call about whether it's safe to
+     auto-resolve.
+
+IMPORTANT — decision accuracy accounts for the amount-based policy gate:
+  Phase 1's ground truth labels each exception type with an "intrinsic"
+  expected_action — e.g. TIMING is intrinsically safe to auto-resolve.
+  But the system's actual policy (config.AUTO_RESOLVE_MAX_AMOUNT) also
+  requires escalation for ANY transaction above the auto-resolve amount
+  cap, regardless of exception type. A TIMING case on a $30,000 wire
+  transfer is correctly escalated by policy even though TIMING alone
+  would normally qualify for auto-resolution.
+
+  Scoring against the intrinsic label alone would penalize the agent
+  for correctly following policy — exactly the kind of eval design gap
+  this project's earlier phases also surfaced (see FinGuard's keyword
+  matching case for a similar lesson). The fix is to compute the
+  POLICY-CORRECT expected action: intrinsic expectation, overridden to
+  ESCALATE if amount exceeds the cap. We score against that, not the
+  intrinsic label alone — and we still report the intrinsic mismatch
+  rate separately, since it's a genuinely useful diagnostic.
 
 Why separate these two numbers instead of one blended score?
   An agent can correctly diagnose a DUPLICATE (classification correct)
@@ -33,7 +51,7 @@ logic against the ground truth and the orchestrator's recorded results.
 """
 
 from collections import defaultdict
-from config import EVAL_PASS_THRESHOLD
+from config import EVAL_PASS_THRESHOLD, AUTO_RESOLVE_MAX_AMOUNT
 
 
 class ReconciliationEvaluator:
@@ -55,6 +73,7 @@ class ReconciliationEvaluator:
             {
               "classification_accuracy": float,
               "decision_accuracy": float,
+              "intrinsic_decision_accuracy": float,  ← pre-policy-override comparison, diagnostic only
               "cases_evaluated": int,
               "cases_with_ground_truth": int,
               "per_type_breakdown": dict,
@@ -65,11 +84,14 @@ class ReconciliationEvaluator:
         if verbose:
             print(f"\n  [Evaluator] Scoring {len(investigations)} investigations "
                   f"against {len(ground_truth)} ground truth labels...")
+            print(f"  [Evaluator] Decision accuracy accounts for the "
+                  f"${AUTO_RESOLVE_MAX_AMOUNT:,.0f} amount policy override\n")
 
         case_results = []
         type_correct = defaultdict(int)
         type_total = defaultdict(int)
         decision_correct = 0
+        intrinsic_decision_correct = 0
         classification_correct = 0
         evaluated_count = 0
 
@@ -90,15 +112,27 @@ class ReconciliationEvaluator:
 
             evaluated_count += 1
             expected_type = gt_entry["exception_type"]
-            expected_action = gt_entry["expected_action"]
+            intrinsic_expected_action = gt_entry["expected_action"]
             actual_type = inv["exception_type"]
             actual_action = inv["action_taken"]
+            amount = self._extract_amount(inv["case"])
+
+            # Policy-correct expected action: intrinsic expectation, but
+            # forced to ESCALATE if the amount exceeds the auto-resolve cap —
+            # this mirrors exactly what the resolve_exception tool itself
+            # enforces, so we're scoring the agent against the SAME policy
+            # it was actually required to follow.
+            if amount is not None and amount > AUTO_RESOLVE_MAX_AMOUNT:
+                policy_expected_action = "ESCALATE"
+            else:
+                policy_expected_action = intrinsic_expected_action
 
             # Normalize AUTO_RESOLVED -> AUTO_RESOLVE for comparison
             normalized_action = "AUTO_RESOLVE" if actual_action == "AUTO_RESOLVED" else "ESCALATE"
 
             type_match = (actual_type == expected_type)
-            decision_match = (normalized_action == expected_action)
+            decision_match = (normalized_action == policy_expected_action)
+            intrinsic_match = (normalized_action == intrinsic_expected_action)
 
             type_total[expected_type] += 1
             if type_match:
@@ -106,6 +140,8 @@ class ReconciliationEvaluator:
                 classification_correct += 1
             if decision_match:
                 decision_correct += 1
+            if intrinsic_match:
+                intrinsic_decision_correct += 1
 
             case_results.append({
                 "txn_id": txn_id,
@@ -113,7 +149,10 @@ class ReconciliationEvaluator:
                 "expected_type": expected_type,
                 "actual_type": actual_type,
                 "type_correct": type_match,
-                "expected_action": expected_action,
+                "intrinsic_expected_action": intrinsic_expected_action,
+                "policy_expected_action": policy_expected_action,
+                "amount": amount,
+                "policy_override_applied": policy_expected_action != intrinsic_expected_action,
                 "actual_action": normalized_action,
                 "decision_correct": decision_match,
                 "agent_confidence": inv["confidence"],
@@ -122,13 +161,16 @@ class ReconciliationEvaluator:
             if verbose:
                 type_mark = "✓" if type_match else "✗"
                 decision_mark = "✓" if decision_match else "✗"
+                override_note = " [policy override: amount > cap]" if policy_expected_action != intrinsic_expected_action else ""
                 print(f"  {txn_id}: type {type_mark} ({actual_type} vs {expected_type}) | "
-                      f"decision {decision_mark} ({normalized_action} vs {expected_action})")
+                      f"decision {decision_mark} ({normalized_action} vs {policy_expected_action}){override_note}")
 
         classification_accuracy = (classification_correct / evaluated_count
                                    if evaluated_count else 0.0)
         decision_accuracy = (decision_correct / evaluated_count
                              if evaluated_count else 0.0)
+        intrinsic_decision_accuracy = (intrinsic_decision_correct / evaluated_count
+                                       if evaluated_count else 0.0)
 
         per_type_breakdown = {
             t: {"correct": type_correct[t], "total": type_total[t],
@@ -140,14 +182,17 @@ class ReconciliationEvaluator:
                   decision_accuracy >= EVAL_PASS_THRESHOLD)
 
         if verbose:
-            print(f"\n  [Evaluator] Classification accuracy: {classification_accuracy:.1%}")
-            print(f"  [Evaluator] Decision accuracy:       {decision_accuracy:.1%}")
+            print(f"\n  [Evaluator] Classification accuracy:        {classification_accuracy:.1%}")
+            print(f"  [Evaluator] Decision accuracy (policy-aware): {decision_accuracy:.1%}")
+            print(f"  [Evaluator] Decision accuracy (intrinsic):    {intrinsic_decision_accuracy:.1%} "
+                  f"[diagnostic only — ignores amount policy]")
             print(f"  [Evaluator] {'✓ PASSED' if passed else '✗ BELOW THRESHOLD'} "
                   f"(threshold: {EVAL_PASS_THRESHOLD:.0%})")
 
         return {
             "classification_accuracy": round(classification_accuracy, 4),
             "decision_accuracy": round(decision_accuracy, 4),
+            "intrinsic_decision_accuracy": round(intrinsic_decision_accuracy, 4),
             "cases_evaluated": evaluated_count,
             "cases_with_ground_truth": len(ground_truth),
             "per_type_breakdown": per_type_breakdown,
@@ -165,6 +210,14 @@ class ReconciliationEvaluator:
         elif case["type"] == "unmatched_bank":
             return case["txn"]["txn_id"]
         return "UNKNOWN"
+
+    def _extract_amount(self, case: dict) -> float:
+        """Get the transaction amount for a case, used for policy-aware scoring."""
+        if case["type"] == "fuzzy":
+            return case["ledger"].get("amount")
+        elif case["type"] in ("unmatched_ledger", "unmatched_bank"):
+            return case["txn"].get("amount")
+        return None
 
     def _find_ground_truth(self, txn_id: str, ground_truth: dict) -> dict:
         """
