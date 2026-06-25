@@ -139,6 +139,13 @@ python main.py --no-interactive   # run without pausing for approval (auto-defer
 python rescore_run.py <run_id>    # re-evaluate a past run from the audit trail
 ```
 
+**The `reports/` folder in this repo contains actual output from a completed real run:**
+- `audit_trail.db` — the durable SQLite audit trail with 66 entries across two runs, including auto-resolved cases, escalations, policy-rejected attempts, and human approval decisions
+- `reconciliation_ed5bb31d.json` — the full before/after report from the 33-case run with complete agent reasoning for every exception
+- `rescored_ed5bb31d.json` — the re-scored evaluation output demonstrating 100% accuracy after the policy-aware eval fix
+
+These files are committed intentionally — they are the proof of a real run, not generated artifacts to be ignored.
+
 ---
 
 ## Built With

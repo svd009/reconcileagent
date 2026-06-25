@@ -18,6 +18,10 @@ from src.matching.loader import load_transactions
 from src.agents.orchestrator import ReconciliationOrchestrator
 from config import LEDGER_FILE, BANK_FILE, DATA_DIR
 
+# Use a dedicated test DB so this test never touches or corrupts the
+# production audit trail in reports/audit_trail.db
+TEST_AUDIT_DB = os.path.join(DATA_DIR, "test_agent_audit.db")
+
 
 def run_test():
     print("=" * 60)
@@ -35,11 +39,11 @@ def run_test():
     ledger = load_transactions(LEDGER_FILE)
     bank = load_transactions(BANK_FILE)
 
-    test_db_path = os.path.join(DATA_DIR, "test_audit_trail.db")
-    if os.path.exists(test_db_path):
-        os.remove(test_db_path)
+    # Always start with a clean test DB
+    if os.path.exists(TEST_AUDIT_DB):
+        os.remove(TEST_AUDIT_DB)
 
-    orchestrator = ReconciliationOrchestrator(ledger, bank, test_db_path)
+    orchestrator = ReconciliationOrchestrator(ledger, bank, TEST_AUDIT_DB)
 
     # ── Test: Run a capped reconciliation cycle ─────────────────────
     print("\n[Test] Running capped reconciliation cycle (4 cases)...")
@@ -65,12 +69,18 @@ def run_test():
     print("\n[Verify] Checking audit trail captured the run...")
     run_history = orchestrator.audit.get_run_history(orchestrator.run_id)
     expected_logged = len(result["auto_resolved"]) + len(result["escalated"])
-    assert len(run_history) == expected_logged, \
-        f"Audit trail should have {expected_logged} entries, found {len(run_history)}"
+    assert len(run_history) >= expected_logged, \
+        f"Audit trail should have at least {expected_logged} entries, found {len(run_history)}"
     print(f"  ✓ {len(run_history)} entries correctly logged to durable audit trail")
+    print(f"  (includes any policy-rejected resolve attempts alongside final decisions)")
 
     print(f"\n  Auto-resolved: {len(result['auto_resolved'])}")
     print(f"  Escalated:     {len(result['escalated'])}")
+
+    # ── Cleanup test DB ─────────────────────────────────────────────
+    if os.path.exists(TEST_AUDIT_DB):
+        os.remove(TEST_AUDIT_DB)
+        print(f"\n  [Cleanup] Test audit DB removed")
 
     print("\n" + "=" * 60)
     print("Phase 4 PASSED ✓ — Investigation agent and orchestrator working correctly")
